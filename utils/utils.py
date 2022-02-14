@@ -11,10 +11,14 @@ MENSAGEM = \
 
 def exportar_canvas(configs, canvas):
     nome_arquivo = "Versiera_{}x{}_{} pontos.jpg".format(configs["largura"], configs["altura"], configs["num_pontos"])
-    export_path = os.path.join("imagens", nome_arquivo)
-    if not os.path.exists(export_path):
-        cv2.imwrite(filename=export_path, img=canvas)
-        print(f"[INFO] A imagem foi exportada para {export_path}")
+    diretorio = "imagens"
+    caminho_exportar = os.path.join(diretorio, nome_arquivo)
+    if not os.path.exists(diretorio):
+        os.mkdir(diretorio)
+    
+    if not os.path.exists(caminho_exportar):
+        cv2.imwrite(filename=caminho_exportar, img=canvas)
+        print(f"[INFO] A imagem foi exportada para {caminho_exportar}")
     else:
         print("[INFO] A imagem já existia.")
 
@@ -23,10 +27,14 @@ def exportar_video(configs, imagens, fps):
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     nome_arquivo = "Versiera_{}x{}_{} pontos.mp4".format(configs["largura"], configs["altura"], configs["num_pontos"])
-    export_path = os.path.join("videos", nome_arquivo)
+    diretorio = "videos"
+    caminho_exportar = os.path.join(diretorio, nome_arquivo)
 
-    if not os.path.exists(export_path):
-        writer = cv2.VideoWriter(export_path, fourcc, fps, (imagens[0].shape[1], imagens[0].shape[0]))
+    if not os.path.exists(diretorio):
+        os.mkdir(diretorio)
+    
+    if not os.path.exists(caminho_exportar):
+        writer = cv2.VideoWriter(caminho_exportar, fourcc, fps, (imagens[0].shape[1], imagens[0].shape[0]))
         time.sleep(1)
 
         for imagem in imagens:
@@ -34,17 +42,22 @@ def exportar_video(configs, imagens, fps):
         
         writer.release()
         time.sleep(1)
-        print(f"[INFO] O video foi exportada para {export_path}")
+        print(f"[INFO] O video foi exportada para {caminho_exportar}")
     else:
         print("[INFO] O video já existia.")
 
 
 def exportar_gif(configs, imagens):
     nome_arquivo = "Versiera_{}x{}_{} pontos.gif".format(configs["largura"], configs["altura"], configs["num_pontos"])
-    export_path = os.path.join("gifs", nome_arquivo)
-    if not os.path.exists(export_path):
-        imageio.mimsave(export_path, imagens, duration=0.001)
-        print(f"[INFO] O gif foi exportada para {export_path}")
+    diretorio = "gifs"
+    caminho_exportar = os.path.join(diretorio, nome_arquivo)
+
+    if not os.path.exists(diretorio):
+        os.mkdir(diretorio)
+
+    if not os.path.exists(caminho_exportar):
+        imageio.mimsave(caminho_exportar, imagens, duration=0.001)
+        print(f"[INFO] O gif foi exportada para {caminho_exportar}")
     else:
         print("[INFO] O gif já existia.")
 
