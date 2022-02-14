@@ -4,14 +4,13 @@ from utils.utils import reta_igual_circunferencia as ric
 
 verde, vermelho, azul, preto, branco = (0, 255, 0), (0, 0, 255), (255, 0, 0), (0, 0, 0), (255, 255, 255)
 padding = 10
+imagens = []
 
 def gerar_versiera(configs):
     canvas = np.ones(shape=(configs["altura"] + 10, configs["largura"], 3), dtype=np.uint8) * 255
 
     circunferencia = {"centro": (int(0.5 * configs["largura"]), int(0.5 * (configs["altura"] - 2 * padding))), "r": int(0.5 * configs["altura"]) - padding}
     canvas = cv2.circle(img=canvas, center=(circunferencia["centro"]), radius=circunferencia["r"], color=verde, thickness=1)
-
-    print(f"circunferencia: {circunferencia}")
 
     passo = 1 / configs["num_pontos"]
     ks = np.arange(0 + passo, 1, passo)
@@ -44,6 +43,8 @@ def gerar_versiera(configs):
             canvas = cv2.line(img=canvas, pt1=reta["pt1"], pt2=ponto_dois, color=vermelho, thickness=1)
             canvas = cv2.circle(img=canvas, center=(int(0.5 * configs["largura"]), configs["altura"] - 2 * padding), radius=3, color=azul, thickness=-1)
             indice_correto = 0
+        
+        imagens.append(cv2.flip(src=cv2.rotate(src=canvas, rotateCode=cv2.ROTATE_180), flipCode=1))
 
         cv2.imshow(winname="Maria Gaetana Agnesi", mat=cv2.flip(src=cv2.rotate(src=canvas, rotateCode=cv2.ROTATE_180), flipCode=1))
         chave = cv2.waitKey(int(dt * 1000))
@@ -52,4 +53,4 @@ def gerar_versiera(configs):
 
     canvas = cv2.flip(src=cv2.rotate(src=canvas, rotateCode=cv2.ROTATE_180), flipCode=1)
 
-    return canvas
+    return canvas, imagens
